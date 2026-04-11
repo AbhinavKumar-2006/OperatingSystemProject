@@ -107,6 +107,3 @@ struct proc {
   int is_thread;
 
 };
-
-extern struct proc proc[NPROC];
-// to be used myfork implementation: an array of processes to track threads created by myfork, and a counter to keep track of the number of threads created by myfork
