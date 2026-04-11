@@ -48,6 +48,7 @@ entry("sem_down");
 entry("sem_up");
 entry("clone");
 entry("join");
+<<<<<<< HEAD
 
 entry("getpriority");
 entry("setpriority");
@@ -55,3 +56,7 @@ entry("send");
 entry("recv");
 entry("signal");
 
+=======
+entry("myfork");
+# a new entry added for the custom myfork system call
+>>>>>>> 8b3a5f4

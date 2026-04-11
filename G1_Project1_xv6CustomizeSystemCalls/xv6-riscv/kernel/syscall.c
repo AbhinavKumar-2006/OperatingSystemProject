@@ -108,12 +108,17 @@ extern uint64 sys_sem_down(void);
 extern uint64 sys_sem_up(void);
 extern uint64 sys_clone(void);
 extern uint64 sys_join(void);
+<<<<<<< HEAD
 //eb
 extern uint64 sys_getpriority(void);
 extern uint64 sys_setpriority(void);
 extern uint64 sys_send(void);
 extern uint64 sys_recv(void);
 extern uint64 sys_signal(void);
+=======
+extern uint64 sys_myfork(void);
+// prototype for the custom myfork system call
+>>>>>>> 8b3a5f4
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -145,12 +150,17 @@ static uint64 (*syscalls[])(void) = {
 [SYS_sem_up]     sys_sem_up,
 [SYS_clone] sys_clone,
 [SYS_join]  sys_join,
+<<<<<<< HEAD
 //eb
 [SYS_getpriority] sys_getpriority,
 [SYS_setpriority] sys_setpriority,
 [SYS_send] sys_send,
 [SYS_recv] sys_recv,
 [SYS_signal] sys_signal,
+=======
+[SYS_myfork] sys_myfork,
+// custom system call added for myfork
+>>>>>>> 8b3a5f4
 };
 
 void

@@ -148,7 +148,12 @@ UPROGS=\
 	$U/_ps\
 	$U/_semtest\
 	$U/_threadtest\
+<<<<<<< HEAD
 	$U/_testsys\
+=======
+	$U/_myfork\
+# a new user program added for testing the custom myfork system call
+>>>>>>> 8b3a5f4
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
