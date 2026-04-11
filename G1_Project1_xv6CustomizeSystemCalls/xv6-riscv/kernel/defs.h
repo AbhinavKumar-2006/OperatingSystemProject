@@ -102,6 +102,8 @@ int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
 int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
 void            procdump(void);
 int             get_active_procs(void);
+int             clone(uint64);
+int             join(void);
 
 // swtch.S
 void            swtch(struct context*, struct context*);
@@ -170,6 +172,7 @@ int             copyin(pagetable_t, char *, uint64, uint64);
 int             copyinstr(pagetable_t, char *, uint64, uint64);
 int             ismapped(pagetable_t, uint64);
 uint64          vmfault(pagetable_t, uint64, int);
+int             uvmmirror(pagetable_t, pagetable_t, uint64);
 
 // plic.c
 void            plicinit(void);

@@ -192,3 +192,14 @@ sys_sem_up(void)
   release(&semaphores[id].lock);
   return 0;
 }
+
+
+uint64 sys_clone(void) {
+  uint64 stack;
+  argaddr(0, &stack);
+  return clone(stack);
+}
+
+uint64 sys_join(void) {
+  return join();
+}

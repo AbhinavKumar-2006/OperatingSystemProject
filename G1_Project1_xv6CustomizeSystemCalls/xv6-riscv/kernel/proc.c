@@ -123,6 +123,7 @@ allocproc(void)
 
 found:
   p->pid = allocpid();
+  p->is_thread = 0;
   p->state = USED;
 
   // Allocate a trapframe page.
@@ -158,8 +159,18 @@ freeproc(struct proc *p)
   if(p->trapframe)
     kfree((void*)p->trapframe);
   p->trapframe = 0;
-  if(p->pagetable)
-    proc_freepagetable(p->pagetable, p->sz);
+  if(p->pagetable){
+    if(p->is_thread == 1) { 
+      // 1. Unmap the user memory (do_free = 0 so we don't delete parent's physical RAM)
+      uvmunmap(p->pagetable, 0, PGROUNDUP(p->sz)/PGSIZE, 0);
+      
+      // 2. Free the trampoline, trapframe, and the page table itself
+      proc_freepagetable(p->pagetable, 0);
+    } else {
+      // Normal process: delete everything (do_free is handled inside)
+      proc_freepagetable(p->pagetable, p->sz);
+    }
+  }
   p->pagetable = 0;
   p->sz = 0;
   p->pid = 0;
@@ -707,4 +718,91 @@ get_active_procs(void)
     release(&p->lock);
   }
   return count;
+}
+
+
+
+int
+clone(uint64 stack)
+{
+  int pid;
+  struct proc *np;
+  struct proc *p = myproc();
+
+  // Allocate a new process entry
+  if((np = allocproc()) == 0){
+    return -1;
+  }
+
+  // Set our flag!
+  np->is_thread = 1;
+
+  // IMPORTANT: allocproc automatically generated a blank page table. 
+  // Mirror the memory: new page table, but same physical pages!
+  if(uvmmirror(p->pagetable, np->pagetable, p->sz) < 0){
+    freeproc(np);
+    release(&np->lock);
+    return -1;
+  }
+  np->sz = p->sz;
+
+  // Copy the parent's register states, but set the Stack Pointer (sp) to the new user stack
+  *np->trapframe = *p->trapframe;
+  np->trapframe->a0 = 0;     // Child returns 0
+  np->trapframe->sp = stack; // The new stack from user space
+
+  // Share open files and current directory
+  for(int i = 0; i < NOFILE; i++)
+    if(p->ofile[i])
+      np->ofile[i] = filedup(p->ofile[i]);
+  np->cwd = idup(p->cwd);
+
+  safestrcpy(np->name, p->name, sizeof(p->name));
+  pid = np->pid;
+
+  release(&np->lock);
+
+  acquire(&wait_lock);
+  np->parent = p;
+  release(&wait_lock);
+
+  acquire(&np->lock);
+  np->state = RUNNABLE;
+  release(&np->lock);
+
+  return pid;
+}
+
+
+int
+join(void)
+{
+  struct proc *np;
+  int havekids, pid;
+  struct proc *p = myproc();
+
+  acquire(&wait_lock);
+  for(;;){
+    havekids = 0;
+    for(np = proc; np < &proc[NPROC]; np++){
+      // Only look for our threads!
+      if(np->parent == p && np->is_thread == 1){ 
+        acquire(&np->lock);
+        havekids = 1;
+        if(np->state == ZOMBIE){ // Thread is done
+          pid = np->pid;
+          freeproc(np);          // Clean up (our flag protects the memory here)
+          release(&np->lock);
+          release(&wait_lock);
+          return pid;
+        }
+        release(&np->lock);
+      }
+    }
+    if(!havekids || p->killed){
+      release(&wait_lock);
+      return -1;
+    }
+    sleep(p, &wait_lock); // Wait for a thread to exit
+  }
 }

@@ -105,7 +105,8 @@ extern uint64 sys_getprocs(void);
 extern uint64 sys_sem_create(void);
 extern uint64 sys_sem_down(void);
 extern uint64 sys_sem_up(void);
-
+extern uint64 sys_clone(void);
+extern uint64 sys_join(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -135,6 +136,8 @@ static uint64 (*syscalls[])(void) = {
 [SYS_sem_create] sys_sem_create,
 [SYS_sem_down]   sys_sem_down,
 [SYS_sem_up]     sys_sem_up,
+[SYS_clone] sys_clone,
+[SYS_join]  sys_join,
 };
 
 void

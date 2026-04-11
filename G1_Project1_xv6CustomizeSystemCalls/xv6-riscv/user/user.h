@@ -28,7 +28,8 @@ int getprocs(void);
 int sem_create(int);
 int sem_down(int);
 int sem_up(int);
-
+int clone(void*);
+int join(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

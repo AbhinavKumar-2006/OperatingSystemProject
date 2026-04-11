@@ -24,3 +24,5 @@
 #define SYS_sem_create 23
 #define SYS_sem_down   24
 #define SYS_sem_up     25
+#define SYS_clone 26
+#define SYS_join 27
