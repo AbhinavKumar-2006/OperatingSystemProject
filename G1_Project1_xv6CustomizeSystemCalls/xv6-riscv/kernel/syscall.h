@@ -26,3 +26,5 @@
 #define SYS_sem_up     25
 #define SYS_clone 26
 #define SYS_join 27
+#define SYS_myfork 28
+// custom system call number for myfork
