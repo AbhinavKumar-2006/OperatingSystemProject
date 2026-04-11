@@ -105,6 +105,11 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   int is_thread;
+  
+ //eb
+ int priority;   // process priority
+int msg;        // IPC message
+int has_msg;    // message flag
 
 };
 

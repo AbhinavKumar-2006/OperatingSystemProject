@@ -26,5 +26,10 @@
 #define SYS_sem_up     25
 #define SYS_clone 26
 #define SYS_join 27
-#define SYS_myfork 28
-// custom system call number for myfork
+#define SYS_getpriority  28
+#define SYS_setpriority  29
+#define SYS_send         30
+#define SYS_recv         31
+#define SYS_signal       32
+
+

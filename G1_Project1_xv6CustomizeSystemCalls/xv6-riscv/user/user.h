@@ -30,7 +30,12 @@ int sem_down(int);
 int sem_up(int);
 int clone(void*);
 int join(void);
-int myfork(void); // prototype for the custom myfork system call
+//eb
+int getpriority(void);
+int setpriority(int);
+int send(int, int);
+int recv(void);
+int signal(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

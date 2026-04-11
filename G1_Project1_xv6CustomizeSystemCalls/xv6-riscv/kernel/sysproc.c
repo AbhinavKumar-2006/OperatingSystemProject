@@ -1,11 +1,13 @@
 #include "types.h"
-#include "riscv.h"
-#include "defs.h"
 #include "param.h"
 #include "memlayout.h"
+#include "riscv.h"
 #include "spinlock.h"
 #include "proc.h"
+#include "defs.h"
 #include "vm.h"
+
+extern struct proc proc[NPROC];
 
 
 
@@ -203,21 +205,60 @@ uint64 sys_clone(void) {
 uint64 sys_join(void) {
   return join();
 }
-
-uint64 sys_myfork(void) { //custom system call implementation by Aditya Ekka
-  int count = 0;
-  struct proc *p;
-  struct proc *cur = myproc();
-  const int max = 5;
-
-  for(p = proc; p < &proc[NPROC]; p++){
-    if(p->parent == cur)
-      count++;
-  }
-
-  if(count >= max){
-    printf("Maximum number of child processes reached. Cannot fork.\n");
-    return -1;
-  }
-  return kfork();
+//eb
+uint64 sys_getpriority(void) {
+    return myproc()->priority;
 }
+
+uint64 sys_setpriority(void) {
+    int p;
+    argint(0, &p);
+    myproc()->priority = p;
+    return 0;
+}
+
+uint64 sys_send(void)
+{
+    int pid, msg;
+    argint(0, &pid);
+    argint(1, &msg);
+
+    struct proc *p;
+
+    for(p = proc; p < &proc[NPROC]; p++)
+    {
+        acquire(&p->lock);
+
+        if(p->pid == pid)
+        {
+            p->msg = msg;
+            p->has_msg = 1;
+            release(&p->lock);
+            return 0;
+        }
+
+        release(&p->lock);
+    }
+
+    return -1;
+}
+
+uint64 sys_recv(void) {
+    struct proc *p = myproc();
+
+    while(p->has_msg == 0) {
+        ; // wait
+    }
+
+    int m = p->msg;
+    p->has_msg = 0;
+    return m;
+}
+
+uint64 sys_signal(void) {
+    int pid;
+    argint(0, &pid);
+
+    return kkill(pid);
+}
+//endeb
