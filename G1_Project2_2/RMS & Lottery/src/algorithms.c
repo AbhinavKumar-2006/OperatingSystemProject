@@ -58,9 +58,9 @@ void execute_lottery_sched(Task task_arr[], int total_tasks, int core_count) {
         proc_cores[idx].quantum_rem  = 0;
     }
 
-    int clock_tick      = 0;
-    int done_tasks      = 0;
-    int slice_limit     = 4;
+    int clock_tick = 0;
+    int done_tasks = 0;
+    int slice_limit = 4;
 
     srand((unsigned int)time(NULL));
 
@@ -121,9 +121,9 @@ void execute_lottery_sched(Task task_arr[], int total_tasks, int core_count) {
 
             // mark as done if remaining time is up
             if (task_arr[active_t].time_rem == 0) {
-                task_arr[active_t].status           = STATUS_DONE;
-                task_arr[active_t].time_done        = clock_tick + 1;
-                proc_cores[idx].active_task_id      = -1;
+                task_arr[active_t].status = STATUS_DONE;
+                task_arr[active_t].time_done = clock_tick + 1;
+                proc_cores[idx].active_task_id = -1;
                 done_tasks++;
             }
             // or put back to ready if its time block expired
@@ -141,6 +141,7 @@ void execute_lottery_sched(Task task_arr[], int total_tasks, int core_count) {
 
 // rms scheduling core implementation
 // priority is completely driven by how short the period interval is
+
 void execute_rms_sched(Task task_arr[], int total_tasks, int core_count) {
     printf("\n--- Commencing Rate Monotonic Scheduling (RMS) ---\n");
     printf("Priority = shortest period first (preemptive)\n");
@@ -157,8 +158,8 @@ void execute_rms_sched(Task task_arr[], int total_tasks, int core_count) {
         proc_cores[idx].quantum_rem  = 0;
     }
 
-    int clock_tick      = 0;
-    int done_tasks      = 0;
+    int clock_tick = 0;
+    int done_tasks = 0;
 
     while (done_tasks < total_tasks) {
 
@@ -181,7 +182,7 @@ void execute_rms_sched(Task task_arr[], int total_tasks, int core_count) {
                 wait_queue[prev_idx + 1] = wait_queue[prev_idx];
                 prev_idx--;
             }
-            wait_queue[prev_idx + 1] = hold;
+            wait_queue[prev_idx+1] = hold;
         }
 
         // step 2: we need to check if we should kick/preempt anyone off the busy cores
@@ -200,7 +201,7 @@ void execute_rms_sched(Task task_arr[], int total_tasks, int core_count) {
                 int run_t = proc_cores[idx].active_task_id;
                 if (task_arr[run_t].interval > worst_intr) {
                     worst_intr = task_arr[run_t].interval;
-                    worst_core    = idx;
+                    worst_core = idx;
                 }
             }
 
@@ -242,7 +243,7 @@ void execute_rms_sched(Task task_arr[], int total_tasks, int core_count) {
                     task_arr[t].time_arrival <= clock_tick &&
                     task_arr[t].interval < best_intr) {
                     best_intr = task_arr[t].interval;
-                    best_tsk      = t;
+                    best_tsk = t;
                 }
             }
 
@@ -268,9 +269,9 @@ void execute_rms_sched(Task task_arr[], int total_tasks, int core_count) {
             task_arr[run_t].time_rem--;
 
             if (task_arr[run_t].time_rem == 0) {
-                task_arr[run_t].status           = STATUS_DONE;
-                task_arr[run_t].time_done        = clock_tick + 1;
-                proc_cores[idx].active_task_id   = -1;
+                task_arr[run_t].status = STATUS_DONE;
+                task_arr[run_t].time_done = clock_tick + 1;
+                proc_cores[idx].active_task_id = -1;
                 done_tasks++;
             }
         }
