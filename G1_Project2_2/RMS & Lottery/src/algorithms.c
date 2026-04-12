@@ -41,7 +41,7 @@ void show_stats(Task task_arr[], int total_tasks) {
     printf("Mean Waiting Time    : %.2f\n", sum_wt  / total_tasks);
 }
 
-// lottery scheduling core implementation
+//1 lottery scheduling core implementation
 // we use random tickets to assign priority
 void execute_lottery_sched(Task task_arr[], int total_tasks, int core_count) {
     printf("\n--- Commencing Lottery Scheduling (Quantum = 4) ---\n");
@@ -139,7 +139,7 @@ void execute_lottery_sched(Task task_arr[], int total_tasks, int core_count) {
     show_stats(task_arr, total_tasks);
 }
 
-// rms scheduling core implementation
+// 2 rms scheduling core implementation
 // priority is completely driven by how short the period interval is
 void execute_rms_sched(Task task_arr[], int total_tasks, int core_count) {
     printf("\n--- Commencing Rate Monotonic Scheduling (RMS) ---\n");
@@ -259,7 +259,7 @@ void execute_rms_sched(Task task_arr[], int total_tasks, int core_count) {
         // step 4: register the current core state to the chart
         display_timeline(clock_tick, proc_cores, core_count, task_arr);
 
-        // step 5: actually run process bounds during this clock tick
+        // step 5: actually run process bounds during this clock tick for final
         for (int idx = 0; idx < core_count; idx++) {
             if (proc_cores[idx].active_task_id == -1)
                 continue;
