@@ -1,124 +1,391 @@
-README FOR P2
-## MLFQ Execution Screenshot/Output
-```text
+# G1 Project 2 — Multiprocessor CPU Scheduling Simulator
 
-+++ Multiprocessor Scheduling Simulator (MLFQ) +++
-   Number of Processing Cores: 2
-   Total tasks initialized: 15
+A collection of CPU scheduling algorithm simulators implemented in **C**, demonstrating how different scheduling strategies behave in a **multicore environment**. Each team member has implemented two distinct scheduling algorithms, all featuring tick-by-tick Gantt chart output, I/O handling (where applicable), and performance metrics.
 
---- Commencing MLFQ Scheduling ---
-Queues: Q0(Q=2) -> Q1(Q=4) -> Q2(Q=8)
-Tick	Core 0	Core 1	| External Wait States
-----------------------------------------------------------
-00	[Q0-T1]	[--]	| IO: None
-01	[Q0-T1]	[Q0-T2]	| IO: None
-02	[Q0-T3]	[Q0-T2]	| IO: None
-03	[Q0-T3]	[Q1-T1]	| IO: [T2:2R] 
-04	[Q0-T4]	[Q1-T1]	| IO: [T2:1R] 
-05	[Q0-T4]	[Q1-T1]	| IO: None
-06	[Q0-T2]	[Q1-T1]	| IO: None
-07	[Q0-T2]	[Q0-T5]	| IO: None
-08	[Q0-T6]	[Q0-T5]	| IO: [T2:2R] 
-09	[Q0-T6]	[Q1-T3]	| IO: [T2:1R] 
-10	[Q0-T2]	[Q1-T3]	| IO: None
-11	[Q0-T2]	[Q0-T7]	| IO: [T3:4R] 
-12	[Q0-T8]	[Q0-T7]	| IO: [T3:3R] 
-13	[Q0-T8]	[Q1-T4]	| IO: [T3:2R] 
-14	[Q1-T5]	[Q1-T4]	| IO: [T3:1R] 
-15	[Q1-T5]	[Q0-T3]	| IO: None
-16	[Q1-T5]	[Q0-T3]	| IO: None
-17	[Q1-T5]	[Q0-T9]	| IO: None
-18	[Q0-T10]	[Q0-T9]	| IO: None
-19	[Q0-T10]	[Q1-T3]	| IO: None
-20	[Q0-T11]	[Q1-T3]	| IO: None
-21	[Q1-T6]	[Q1-T7]	| IO: [T3:4R] [T11:1R] 
-22	[Q1-T6]	[Q0-T11]	| IO: [T3:3R] [T7:1R] 
-23	[Q1-T6]	[Q0-T7]	| IO: [T3:2R] [T11:1R] 
-24	[Q0-T11]	[Q0-T7]	| IO: [T3:1R] 
-25	[Q0-T3]	[Q0-T12]	| IO: None
-26	[Q0-T3]	[Q0-T12]	| IO: None
-27	[Q0-T13]	[Q1-T7]	| IO: None
-28	[Q0-T13]	[Q0-T14]	| IO: [T7:1R] 
-29	[Q0-T7]	[Q0-T14]	| IO: None
-30	[Q0-T7]	[Q0-T15]	| IO: None
-31	[Q1-T7]	[Q0-T15]	| IO: None
-32	[Q1-T8]	[Q1-T9]	| IO: [T7:1R] 
-33	[Q1-T8]	[Q1-T9]	| IO: None
-34	[Q1-T8]	[Q1-T9]	| IO: None
-35	[Q1-T8]	[Q0-T7]	| IO: [T9:5R] 
-36	[Q1-T10]	[Q0-T7]	| IO: [T9:4R] 
-37	[Q1-T10]	[Q1-T7]	| IO: [T9:3R] 
-38	[Q1-T10]	[Q1-T12]	| IO: [T9:2R] 
-39	[Q1-T10]	[Q1-T12]	| IO: [T9:1R] 
-40	[Q0-T9]	[Q1-T12]	| IO: None
-41	[Q0-T9]	[Q1-T12]	| IO: None
-42	[Q1-T9]	[Q1-T13]	| IO: None
-43	[Q1-T9]	[Q1-T14]	| IO: [T13:2R] 
-44	[Q1-T9]	[Q1-T14]	| IO: [T13:1R] 
-45	[Q0-T13]	[Q1-T14]	| IO: [T9:5R] 
-46	[Q0-T13]	[Q1-T14]	| IO: [T9:4R] 
-47	[Q1-T13]	[Q1-T15]	| IO: [T9:3R] [T14:3R] 
-48	[Q2-T1]	[Q1-T15]	| IO: [T9:2R] [T13:2R] [T14:2R] 
-49	[Q2-T1]	[Q1-T15]	| IO: [T9:1R] [T13:1R] [T14:1R] 
-50	[Q2-T1]	[Q0-T9]	| IO: None
-51	[Q2-T1]	[Q0-T9]	| IO: None
-52	[Q2-T1]	[Q0-T13]	| IO: None
-53	[Q2-T1]	[Q0-T14]	| IO: None
-54	[Q2-T1]	[Q0-T14]	| IO: None
-55	[Q2-T1]	[Q1-T9]	| IO: None
-56	[Q1-T14]	[Q1-T9]	| IO: None
-57	[Q1-T14]	[Q1-T9]	| IO: None
-58	[Q1-T14]	[Q2-T1]	| IO: [T9:5R] 
-59	[Q1-T14]	[Q2-T5]	| IO: [T9:4R] 
-60	[Q2-T8]	[Q2-T5]	| IO: [T9:3R] [T14:3R] 
-61	[Q2-T8]	[Q2-T10]	| IO: [T5:3R] [T9:2R] [T14:2R] 
-62	[Q2-T12]	[Q2-T10]	| IO: [T5:2R] [T9:1R] [T14:1R] 
-63	[Q2-T12]	[Q2-T10]	| IO: [T5:1R] 
-64	[Q2-T12]	[Q0-T5]	| IO: None
-65	[Q2-T12]	[Q0-T5]	| IO: None
-66	[Q0-T9]	[Q0-T14]	| IO: [T12:4R] 
-67	[Q0-T9]	[Q0-T14]	| IO: [T12:3R] 
-68	[Q1-T5]	[Q1-T9]	| IO: [T12:2R] 
-69	[Q1-T5]	[--]	| IO: [T12:1R] 
-70	[Q1-T5]	[Q0-T12]	| IO: None
-71	[Q1-T5]	[Q0-T12]	| IO: None
-72	[Q1-T12]	[Q2-T5]	| IO: None
-73	[Q1-T12]	[Q2-T5]	| IO: None
-74	[Q1-T12]	[--]	| IO: [T5:3R] 
-75	[Q1-T12]	[--]	| IO: [T5:2R] 
-76	[Q2-T12]	[--]	| IO: [T5:1R] 
-77	[Q2-T12]	[Q0-T5]	| IO: None
-78	[Q2-T12]	[Q0-T5]	| IO: None
-79	[Q2-T12]	[Q1-T5]	| IO: None
-80	[--]	[Q1-T5]	| IO: [T12:4R] 
-81	[--]	[--]	| IO: [T12:3R] 
-82	[--]	[--]	| IO: [T12:2R] 
-83	[--]	[--]	| IO: [T12:1R] 
-84	[Q0-T12]	[--]	| IO: None
-85	[Q0-T12]	[--]	| IO: None
-86	[Q1-T12]	[--]	| IO: None
-87	[Q1-T12]	[--]	| IO: None
-88	[Q1-T12]	[--]	| IO: None
+---
 
---- Performance Stats ---
-TID	Arrival	Burst	Start	Finish	Turnaround	Waiting
----	-------	-----	-----	------	----------	-------
-T1	0	15	0	59	59		44
-T2	1	6	1	12	11		5
-T3	2	10	2	27	25		15
-T4	4	4	4	15	11		7
-T5	5	20	7	81	76		56
-T6	8	5	8	24	16		11
-T7	10	12	11	38	28		16
-T8	12	8	12	62	50		42
-T9	15	18	17	69	54		36
-T10	18	9	18	64	46		37
-T11	20	3	20	25	5		2
-T12	22	25	25	89	67		42
-T13	25	7	27	53	28		21
-T14	28	14	28	68	40		26
-T15	30	5	30	50	20		15
+## Team Members & Algorithms
 
+| Member     | Algorithm 1                       | Algorithm 2                              |
+|------------|-----------------------------------|------------------------------------------|
+| **Aashish** | Lottery Scheduling               | Rate Monotonic Scheduling (RMS)          |
+| **Abhinav** | Round Robin (RR)                 | Multilevel Feedback Queue (MLFQ)         |
+| **Aditya**  | Multilevel Feedback Queue (MLFQ) | Completely Fair Scheduler (CFS)          |
+| **Nagamani**| Lottery Scheduling               | MLFQ                                     |
+
+---
+
+## Project Structure
+
+```
+G1_Project2_2/
+├── Aashish/
+│   ├── Makefile
+│   ├── readme.md
+│   └── src/
+│       ├── main.c          — Menu-driven entry point
+│       ├── algorithms.c    — Lottery & RMS implementations
+│       ├── algorithms.h    — Function prototypes
+│       └── types.h         — Task & Core data structures
+│
+├── Abhinav/
+│   ├── Makefile
+│   ├── readme.md
+│   └── src/
+│       ├── main.c          — Menu-driven entry point
+│       ├── algorithms.c    — Round Robin & MLFQ implementations
+│       ├── algorithms.h    — Function prototypes
+│       └── types.h         — Process & CPU data structures
+│
+├── Aditya/
+│   ├── Makefile
+│   └── src/
+│       ├── main.c          — Menu-driven entry point
+│       ├── algorithms.c    — MLFQ & CFS implementations
+│       ├── algorithms.h    — Function prototypes
+│       └── types.h         — Task & Core data structures (with IO + CFS fields)
+│
+├── nagamani/
+│   ├── README.md
+│   ├── main.c
+│   ├── lottery.c
+│   └── mlfq.c
+│
+├── MLFQ/                   — Standalone MLFQ reference implementation
+│   ├── Makefile
+│   ├── mlfq.c
+│   └── types.h
+│
+└── README.md               — This file
+```
+
+---
+
+## Algorithms Documentation
+
+---
+
+### 1. Round Robin (RR) — *Abhinav*
+
+Round Robin is one of the simplest preemptive scheduling algorithms, designed for **time-sharing systems**.
+
+#### How It Works
+
+- All processes are placed in a **single FIFO ready queue**
+- Each process receives a **fixed time quantum** (4 ticks in our implementation)
+- When a process's quantum expires, it is moved to the **back of the queue**
+- The next process in the queue gets assigned to the CPU
+- If a process finishes before its quantum, the CPU is freed immediately
+
+#### Key Characteristics
+
+| Property               | Value                            |
+|------------------------|----------------------------------|
+| Preemptive             | Yes (quantum-based)              |
+| Time Quantum           | 4 ticks                          |
+| Starvation             | None — every process gets a turn  |
+| Context Switch Overhead| High (frequent switches)         |
+| Best For               | Time-sharing, interactive systems|
+
+#### Implementation Details
+
+- **Multicore support**: Processes are assigned to idle CPUs in order
+- **No priority** — purely cyclic order
+- **Metrics tracked**: Turnaround Time, Waiting Time, Response Time
+
+#### Performance Analysis
+
+```
+Avg Turnaround Time : 36.05
+Avg Waiting Time    : 23.65
+Avg Response Time   : 23.65
+```
+
+**Observations**:
+- Ensures fair CPU distribution among all processes
+- Performance degrades with a large number of processes (higher waiting times)
+- Long-running processes experience significant delays due to frequent preemption
+- Quantum size is critical: too small → excessive switching, too large → degrades to FCFS
+
+---
+
+### 2. Lottery Scheduling — *Aashish*
+
+Lottery Scheduling is a **probabilistic scheduling algorithm** that uses randomized ticket allocation to determine CPU access.
+
+#### How It Works
+
+- Each task is assigned a number of **lottery tickets**
+- At each scheduling decision, a **random ticket is drawn** from the pool of ready tasks
+- The task holding that ticket **wins the CPU**
+- Tasks with more tickets have a **proportionally higher chance** of being selected
+- A time quantum of **4 ticks** is used before re-drawing
+
+#### Key Characteristics
+
+| Property               | Value                                      |
+|------------------------|--------------------------------------------|
+| Preemptive             | Yes (quantum-based)                        |
+| Time Quantum           | 4 ticks                                    |
+| Starvation             | Possible but unlikely (probabilistic)      |
+| Fairness               | Proportional — more tickets = more CPU     |
+| Best For               | Systems needing proportional share control |
+
+#### Implementation Details
+
+- **Ticket-based selection**: Sum all tickets, pick a random number, iterate to find the winner
+- **Multicore**: Each idle core independently draws a winner from the ready pool
+- **Metrics tracked**: Turnaround Time, Waiting Time
+
+#### Performance Analysis
+
+```
+Mean Turnaround Time : 25.85
+Mean Waiting Time    : 13.45
+```
+
+**Observations**:
+- Output is **non-deterministic** — different runs may produce different schedules
+- Tasks with more tickets statistically receive more CPU time
+- Short tasks may get delayed if unlucky in the draw
+- Long-running tasks with high ticket counts dominate CPU access
+
+---
+
+### 3. Rate Monotonic Scheduling (RMS) — *Aashish*
+
+RMS is a **fixed-priority preemptive algorithm** used primarily in **real-time systems**.
+
+#### How It Works
+
+- Each task has a fixed **period** (interval)
+- Priority is determined by period: **shorter period = higher priority**
+- Higher-priority tasks **preempt** lower-priority tasks immediately
+- Tasks run until completion or preemption
+
+#### Key Characteristics
+
+| Property               | Value                                     |
+|------------------------|-------------------------------------------|
+| Preemptive             | Yes (priority-based preemption)           |
+| Priority Assignment    | Inversely proportional to period          |
+| Starvation             | Possible for low-priority (long-period)   |
+| Optimal For            | Harmonic periodic task sets               |
+| Best For               | Hard real-time systems                    |
+
+#### Implementation Details
+
+- **Sorted ready queue**: Tasks are sorted by period at every tick using insertion sort
+- **Preemption**: A running task is displaced if a ready task has a shorter period
+- **Multicore**: Preemption checks target the core running the lowest-priority task
+
+#### Performance Analysis
+
+```
+Mean Turnaround Time : 20.80
+Mean Waiting Time    : 8.40
+```
+
+**Observations**:
+- Significantly lower turnaround and waiting times compared to Lottery Scheduling
+- Deterministic — same input always produces same output
+- Tasks with shorter periods dominate the CPU
+- Long-period tasks may experience starvation
+
+---
+
+### 4. Multilevel Feedback Queue (MLFQ) — *Aditya & Abhinav*
+
+MLFQ is an **adaptive scheduling algorithm** that automatically adjusts process priority based on behavior.
+
+#### How It Works
+
+- The system maintains **three priority queues**:
+  - **Q0 (High)**: Time quantum = 2 ticks (Aditya) / 4 ticks (Abhinav)
+  - **Q1 (Medium)**: Time quantum = 4 ticks (Aditya) / 8 ticks (Abhinav)
+  - **Q2 (Low)**: Time quantum = 8 ticks (Aditya) / FCFS (Abhinav)
+- All new tasks start in **Q0** (highest priority)
+- If a task **exhausts its quantum**, it is **demoted** to the next lower queue
+- Higher-priority queues are served first (strict priority)
+- **Aditya's implementation** also includes:
+  - IO burst handling (tasks block for IO and are promoted back to Q0 on completion)
+  - Separate IO wait state tracking
+
+#### Key Characteristics
+
+| Property               | Value                                     |
+|------------------------|-------------------------------------------|
+| Preemptive             | Yes (quantum-based + strict priority)     |
+| Queue Levels           | 3 (Q0, Q1, Q2)                            |
+| Starvation             | Possible for long-running CPU-bound tasks |
+| Adaptation             | Automatic demotion based on CPU usage     |
+| Best For               | General-purpose systems, mixed workloads  |
+
+#### Implementation Details (Aditya's version)
+
+- **IO Handling**: Tasks trigger IO waits at configurable frequencies. During IO, a task enters `STATUS_WAIT` and decrements `io_rem` each tick. Upon IO completion, the task is **promoted back to Q0** for responsive scheduling.
+- **Three queue levels** with strict priority: Q0 tasks always run before Q1, Q1 before Q2.
+- **Multicore**: Multiple idle cores can be assigned tasks from different queue levels simultaneously.
+- **15 tasks** with varying burst times, IO frequencies, and IO durations.
+
+#### Performance Analysis (Aditya's version with IO)
+
+```
 Mean Turnaround Time : 35.73
 Mean Waiting Time    : 25.00
 ```
+
+#### Performance Analysis (Abhinav's version without IO)
+
+```
+Avg Turnaround Time : 32.00
+Avg Waiting Time    : 19.60
+Avg Response Time   : 1.25
+```
+
+**Observations**:
+- Short tasks finish quickly in Q0 (excellent response time)
+- Long CPU-bound tasks gradually sink to Q2 and experience higher waiting times
+- IO-bound tasks benefit from automatic promotion back to Q0
+- Without aging, Q2 tasks may get starved if Q0/Q1 always have ready tasks
+
+---
+
+### 5. Completely Fair Scheduler (CFS) — *Aditya*
+
+CFS is inspired by the **Linux kernel's Completely Fair Scheduler**. It aims to give every task a **proportionally fair share** of CPU time using virtual runtime tracking.
+
+#### How It Works
+
+- Each task maintains a **virtual runtime (vruntime)** counter
+- The task with the **smallest vruntime** is always scheduled next
+- vruntime increments are **inversely proportional to task weight**:
+  ```
+  vruntime_increment = (1024 / weight) × time_executed
+  ```
+- Task weight is derived from a **nice value** (-5 to +5):
+  - Lower nice → higher weight → slower vruntime growth → more CPU time
+  - Higher nice → lower weight → faster vruntime growth → less CPU time
+- **Dynamic time slices** are computed proportional to each task's weight relative to total ready weight
+- **Sleeper fairness**: Tasks returning from IO have their vruntime set to the minimum vruntime of all ready tasks, preventing starvation of IO-bound processes
+- **Preemption**: If a ready task's vruntime is significantly lower than a running task's, it preempts
+
+#### Weight Table (from Linux `sched_prio_to_weight`)
+
+| Nice Value | Weight | CPU Share (relative) |
+|------------|--------|----------------------|
+| -5         | 3277   | ~3.2x                |
+| -4         | 2621   | ~2.6x                |
+| -3         | 2097   | ~2.0x                |
+| -2         | 1678   | ~1.6x                |
+| -1         | 1342   | ~1.3x                |
+|  0         | 1024   | 1.0x (default)       |
+| +1         |  820   | ~0.8x                |
+| +2         |  655   | ~0.6x                |
+| +3         |  526   | ~0.5x                |
+| +4         |  423   | ~0.4x                |
+| +5         |  335   | ~0.3x                |
+
+#### Key Characteristics
+
+| Property               | Value                                          |
+|------------------------|------------------------------------------------|
+| Preemptive             | Yes (vruntime-based preemption)                |
+| Fairness               | Proportional — weighted by nice value          |
+| Starvation             | Prevented by vruntime convergence              |
+| Time Slice             | Dynamic — proportional to weight               |
+| IO Handling            | Sleeper fairness (vruntime reset on IO return) |
+| Best For               | General-purpose, desktop, server workloads     |
+
+#### Implementation Details
+
+- **vruntime tracking**: Each task's vruntime grows at `1024/weight` per tick. High-weight (low-nice) tasks accumulate vruntime slower, naturally receiving more CPU time.
+- **Dynamic time slices**: Computed as `(task_weight / total_ready_weight) × target_latency`, with a minimum granularity of 1 tick and a base target latency of 6 ticks.
+- **Preemption**: If any ready task's vruntime + 2.0 < running task's vruntime, preemption occurs.
+- **Sleeper fairness**: When a task completes IO, its vruntime is set to `min_vruntime` of all ready tasks, giving it immediate access to the CPU.
+- **IO handling**: Identical to MLFQ — tasks trigger IO at configurable frequencies and durations.
+
+#### Performance Analysis
+
+```
+Mean Turnaround Time : 38.33
+Mean Waiting Time    : 27.60
+```
+
+**Observations**:
+- CFS distributes CPU time proportionally — tasks with nice=-5 (T5) get ~3.2× more execution than nice=+5 (T9)
+- The vruntime mechanism naturally prevents starvation, unlike priority-based systems
+- IO-bound tasks benefit from sleeper fairness and get responsive scheduling after IO completion
+- Higher average waiting times compared to MLFQ because CFS focuses on **fairness** rather than **throughput**
+- Preemption ensures that newly arrived or IO-returning tasks are scheduled promptly
+- The scheduler is fully deterministic (same workload → same schedule)
+
+---
+
+## How to Build and Run
+
+Each member's implementation can be built and run independently:
+
+### Aashish (Lottery + RMS)
+```bash
+cd Aashish
+make
+./scheduler_sim
+```
+
+### Abhinav (Round Robin + MLFQ)
+```bash
+cd Abhinav
+make
+./scheduler_sim
+```
+
+### Aditya (MLFQ + CFS)
+```bash
+cd Aditya
+make
+./scheduler_sim
+```
+
+### Nagamani
+```bash
+cd nagamani
+# Refer to nagamani/README.md for build instructions
+```
+
+---
+
+## Common Configuration
+
+All implementations simulate scheduling with:
+- **2 CPU cores** (multiprocessor)
+- **15–20 predefined tasks** with varying arrival times and burst times
+- **Tick-by-tick Gantt chart output** showing core assignments
+- **Performance metrics**: Turnaround Time, Waiting Time (some include Response Time)
+
+---
+
+## Comparison of Algorithms
+
+| Algorithm | Type          | Fairness            | Starvation | IO Handling | Deterministic |
+|-----------|---------------|---------------------|------------|-------------|---------------|
+| Round Robin | Time-sharing | Equal (cyclic)     | No         | No          | Yes           |
+| Lottery   | Probabilistic | Proportional (tickets) | Unlikely | No          | No            |
+| RMS       | Real-time     | Priority-based      | Possible   | No          | Yes           |
+| MLFQ      | Adaptive      | Priority + feedback  | Possible   | Yes*        | Yes           |
+| CFS       | Fair-share    | Proportional (weight)| No         | Yes         | Yes           |
+
+*IO handling is present in Aditya's MLFQ implementation
+
+---
+
+## Limitations
+
+- All simulators use predefined tasks (no user input for process creation)
+- RMS does not simulate periodic task re-release (tasks run once)
+- MLFQ does not implement aging (possible starvation in lower queues)
+- CFS preemption threshold is fixed (not adaptive)
+- No inter-process communication or synchronization primitives
+- Context switch overhead is not modeled
+
+---
