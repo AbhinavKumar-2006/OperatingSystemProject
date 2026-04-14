@@ -107,3 +107,4 @@ struct proc {
   int is_thread;
 
 };
+extern struct proc proc[NPROC];

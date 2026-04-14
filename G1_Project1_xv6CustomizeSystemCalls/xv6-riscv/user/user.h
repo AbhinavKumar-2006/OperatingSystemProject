@@ -30,7 +30,7 @@ int sem_down(int);
 int sem_up(int);
 int clone(void*);
 int join(void);
-
+int myfork(void); //
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
