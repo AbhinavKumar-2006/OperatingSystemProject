@@ -48,3 +48,4 @@ entry("sem_down");
 entry("sem_up");
 entry("clone");
 entry("join");
+entry("myfork"); //

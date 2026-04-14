@@ -203,3 +203,21 @@ uint64 sys_clone(void) {
 uint64 sys_join(void) {
   return join();
 }
+
+uint64 sys_myfork(void) {
+  int count = 0;
+  struct proc *p;
+  struct proc *cur = myproc();
+  const int max_children = 5;
+
+  for(p = proc; p < &proc[NPROC]; p++) {
+    if(p->parent == cur)
+      count++;
+  }
+
+  if(count >= max_children) {
+    return -1;
+  }
+
+  return kfork();
+}

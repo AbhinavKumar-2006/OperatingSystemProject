@@ -107,6 +107,7 @@ extern uint64 sys_sem_down(void);
 extern uint64 sys_sem_up(void);
 extern uint64 sys_clone(void);
 extern uint64 sys_join(void);
+extern uint64 sys_myfork(void); //
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -138,6 +139,7 @@ static uint64 (*syscalls[])(void) = {
 [SYS_sem_up]     sys_sem_up,
 [SYS_clone] sys_clone,
 [SYS_join]  sys_join,
+[SYS_myfork] sys_myfork, //
 };
 
 void
