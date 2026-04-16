@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-using namespace std;
 
 #define MAX 50
 #define QUEUES 3
